@@ -4,7 +4,7 @@ import numpy as np
 import tkinter.filedialog
 import re
 
-# para agrupar, se debe escribir agrupor y luego tab
+# para agrupar, se debe escribir agrupar y luego tab
 
 print("Ingrese el año en números")
 anio = input()
