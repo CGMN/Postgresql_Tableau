@@ -8,6 +8,9 @@ try:
     print (connection.get_dsn_parameters(),"\n")
 
     # subir csv
+    with open('cupos_para_subir.csv', 'r') as f:
+        cursor.copy_from(f, 'new_cupos_est', sep=',')
+        connection.commit()
 
 except (Exception, psycopg2.Error) as error :
     print ("Error while connecting to PostgreSQL", error)

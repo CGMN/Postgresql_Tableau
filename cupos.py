@@ -107,12 +107,12 @@ df_formato.fillna(0, inplace=True)
 # grabar archivos OK
 #<inicio #
 
-dfqv.to_csv('cupos.csv', encoding='latin1', index=False)
+#dfqv.to_csv('cupos.csv', encoding='latin1', index=False)
 
 df_formato.to_csv('cupos_para_subir.csv', encoding='latin1',
                   index=False, header=False)
 
 print("")
-print("Archivo grabado con el nombre 'cupos_para_subir.csv'")
+print("Archivo grabado con nombre cupos_para_subir.csv'")
 
 #</fin #
