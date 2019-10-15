@@ -31,7 +31,7 @@ dfqv.loc[0, "Cod Establ"] = ""
 dfqv.loc[0, "Glosa"] = ""
 dfqv.loc[0, 'Cod Dipres'] = ""
 dfqv.loc[0, 'Establ'] = ""
-
+#
 # diccionarios
 df1 = pd.read_excel("Estandarización.xlsx",
                     sheet_name="SS y Establ QV a Tableau")
