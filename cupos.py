@@ -94,8 +94,8 @@ df_formato = pd.read_excel("FORMATO CUPOS.xlsx")
 
 df_formato[['CÓDIGO SIRH DEL SERVICIO DE SALUD', 'CÓDIGO SIRH DEL ESTABLECIMIENTO',
             'Glosa', 'Devengado Moneda Año Estudio (2019)', ' Institucion Logra', 'Establecimiento Logra',
-            'CÓDIGO DIPRES DEL SERVICIO DE SALUD']] = dfqv[['Cod SS', 'Cod Establ', 'Glosa', 'Valor',
-                                                            'Servicio de Salud ', 'Establ', 'Cod Dipres']]
+            'CÓDIGO DIPRES DEL SERVICIO DE SALUD']] = dfqv[['Cod SS', 'Cod Establ', 'Glosa', dfqv.columns[3],
+                                                            dfqv.columns[0], 'Establ', 'Cod Dipres']]
 
 df_formato['año '] = anio
 df_formato['mes'] = mes

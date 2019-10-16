@@ -79,7 +79,7 @@ df_formato = pd.read_excel("FORMATO DOTACION.xlsx")
 
 df_formato[['CÓDIGO SIRH DEL SERVICIO DE SALUD', 'CÓDIGO SIRH DEL ESTABLECIMIENTO',
             'Glosa', 'Devengado Moneda Año Estudio (2019)', ' Institucion Logra', 'Establecimiento Logra',
-            'CÓDIGO DIPRES DEL SERVICIO DE SALUD']] = dfdot[['Cod SS', 'Cod Establ', 'Glosa', 'Valor',
+            'CÓDIGO DIPRES DEL SERVICIO DE SALUD']] = dfdot[[dfdot.columns[0], dfdot.columns[1], dfdot.columns[2], dfdot.columns[3],
                                                             'SS', 'Establ', 'Cod Dipres']]
 
 df_formato['año '] = anio
@@ -92,11 +92,11 @@ df_formato.fillna(0, inplace=True)
 #grabar archivo (OK)
 #<inicio #
 
-dfdot.to_csv('dotacion.csv', encoding='latin1', index=False)
-print ('Archivo grabado')
+#dfdot.to_csv('dotacion.csv', encoding='latin1', index=False)
 
 df_formato.to_csv('dotacion_para_subir.csv', encoding='latin1',
                   index=False, header=False)
 
+print ('Archivo grabado')
 
 #</fin #
