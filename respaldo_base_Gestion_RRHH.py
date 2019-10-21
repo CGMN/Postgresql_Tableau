@@ -1,9 +1,5 @@
 import gzip
-import sh as pbs
-from sh import pg_dump
-
-
-AUN NO FUNCIONA
-
-with gzip.open('respaldo_base_gestion_rrhh.gz', 'wb') as f:
-  pg_dump('-h', 'localhost', '-U', 'admin', 'Gestion_RRHH', _out=f)
+import delegator
+with gzip.open('backup.gz', 'wb') as f:
+  c = delegator.run('pg_dump -h localhost -U admin Gestion_RRHH')
+  f.write(c.out.encode('utf-8'))
