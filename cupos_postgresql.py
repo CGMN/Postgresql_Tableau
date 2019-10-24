@@ -5,7 +5,7 @@ try:
                               host="localhost", port="5432", database="Gestion_RRHH")
     cursor = connection.cursor()
     # Print PostgreSQL Connection properties
-    print (connection.get_dsn_parameters(),"\n")
+    #print (connection.get_dsn_parameters(),"\n")
     print ("Se ha conectado satisfactoriamente a la base de datos","\n")
     # subir csv
     print ("¿Está seguro que desea subir el archivo cupos_para_subir.csv a la tabla new_cupos_est?")
