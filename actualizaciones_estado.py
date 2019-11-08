@@ -7,33 +7,45 @@ try:
     print ("Se ha conectado satisfactoriamente a la base de datos","\n")
 
     # actualizar estado
-    print ("Escriba el mes de inicio de la toma de razón, en minusculas")
-    meses_anio=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
+    print ("\nEscriba el mes de inicio de la toma de razón, en minusculas")
+    meses_anio=['enero','febrero','marzo','abril','mayo','junio','julio','agosto',
+    'septiembre','octubre','noviembre','diciembre']
 
     mes_inicio=input()
 
-    meses_considerados=[]
-
-    ind_inicio=meses_anio.index(mes_inicio)
-
-    i=ind_inicio
-    while i<12:
-        meses_considerados.append(meses_anio[i])
-        i+=1
-
-    meses=tuple(meses_considerados)
-
     if mes_inicio in meses_anio:
-        sql=cursor.mogrify("UPDATE presup_est SET anio = '9999' WHERE anio = '2018' AND mes IN %s;",(meses,))
-        cursor.execute(sql)
-        conteo=cursor.rowcount
-        connection.commit()
-        print ("\nSe han modificado:",conteo,"filas")
+        print ("\nEscriba el documento que cambiará a toma de razon, en números")
+        documento=input()
+
+        if isinstance(documento, int):
+            meses_considerados=[]
+
+            ind_inicio=meses_anio.index(mes_inicio) #para obtener la posición del mes en la lista de meses
+
+            #agrega los meses desde el inicio hasta diciembre
+            i=ind_inicio
+            while i<12:
+                meses_considerados.append(meses_anio[i])
+                i+=1
+
+            meses=tuple(meses_considerados) #transforma el listado en una tupla
+
+            sql=cursor.mogrify("""UPDATE presup_est_ultimo SET estado_documento = 'Tomado de Razón' WHERE
+            estado_documento = 'Trámite' AND mes IN %s AND doc_subse=%s;""",(meses,documento))
+            cursor.execute(sql)
+            conteo=cursor.rowcount
+            connection.commit()
+            if conteo==0:
+                print ("\nNo se han realizado modificaciones, asegurese de haber ingresado los datos correctamente")
+            else:
+                print ("\nSe han modificado:",conteo,"filas")
+        else:
+            print ("Debe escribir un número entero")
     else:
         print ("\nMes no corresponde")
 
 except (Exception, psycopg2.Error) as error:
-    print ("Error while connecting to PostgreSQL", error)
+    print ("\nError while connecting to PostgreSQL", error)
 finally:
     #closing database connection.
     if(connection):
