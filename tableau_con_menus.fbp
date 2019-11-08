@@ -291,7 +291,7 @@
                             <property name="help"></property>
                             <property name="id">wxID_ANY</property>
                             <property name="kind">wxITEM_NORMAL</property>
-                            <property name="label">MyMenuItem</property>
+                            <property name="label">Creación</property>
                             <property name="name">m_menuItem10</property>
                             <property name="permission">none</property>
                             <property name="shortcut"></property>
@@ -304,7 +304,7 @@
                             <property name="help"></property>
                             <property name="id">wxID_ANY</property>
                             <property name="kind">wxITEM_NORMAL</property>
-                            <property name="label">MyMenuItem</property>
+                            <property name="label">Subida</property>
                             <property name="name">m_menuItem11</property>
                             <property name="permission">none</property>
                             <property name="shortcut"></property>
@@ -323,7 +323,7 @@
                             <property name="help"></property>
                             <property name="id">wxID_ANY</property>
                             <property name="kind">wxITEM_NORMAL</property>
-                            <property name="label">MyMenuItem</property>
+                            <property name="label">Borrar carga del año</property>
                             <property name="name">m_menuItem14</property>
                             <property name="permission">none</property>
                             <property name="shortcut"></property>
@@ -336,7 +336,7 @@
                             <property name="help"></property>
                             <property name="id">wxID_ANY</property>
                             <property name="kind">wxITEM_NORMAL</property>
-                            <property name="label">MyMenuItem</property>
+                            <property name="label">Cargar año</property>
                             <property name="name">m_menuItem15</property>
                             <property name="permission">none</property>
                             <property name="shortcut"></property>
@@ -355,7 +355,7 @@
                             <property name="help"></property>
                             <property name="id">wxID_ANY</property>
                             <property name="kind">wxITEM_NORMAL</property>
-                            <property name="label">MyMenuItem</property>
+                            <property name="label">Tabla Cupos</property>
                             <property name="name">m_menuItem5</property>
                             <property name="permission">none</property>
                             <property name="shortcut"></property>
@@ -368,7 +368,7 @@
                             <property name="help"></property>
                             <property name="id">wxID_ANY</property>
                             <property name="kind">wxITEM_NORMAL</property>
-                            <property name="label">MyMenuItem</property>
+                            <property name="label">Tabla Presupuesto</property>
                             <property name="name">m_menuItem6</property>
                             <property name="permission">none</property>
                             <property name="shortcut"></property>
@@ -381,7 +381,7 @@
                             <property name="help"></property>
                             <property name="id">wxID_ANY</property>
                             <property name="kind">wxITEM_NORMAL</property>
-                            <property name="label">MyMenuItem</property>
+                            <property name="label">Tabla Sigfe</property>
                             <property name="name">m_menuItem7</property>
                             <property name="permission">none</property>
                             <property name="shortcut"></property>
@@ -394,7 +394,7 @@
                             <property name="help"></property>
                             <property name="id">wxID_ANY</property>
                             <property name="kind">wxITEM_NORMAL</property>
-                            <property name="label">MyMenuItem</property>
+                            <property name="label">Base completa</property>
                             <property name="name">m_menuItem8</property>
                             <property name="permission">none</property>
                             <property name="shortcut"></property>
@@ -413,7 +413,7 @@
                             <property name="help"></property>
                             <property name="id">wxID_ANY</property>
                             <property name="kind">wxITEM_NORMAL</property>
-                            <property name="label">MyMenuItem</property>
+                            <property name="label">Cambiar a Tomado de Razón</property>
                             <property name="name">m_menuItem12</property>
                             <property name="permission">none</property>
                             <property name="shortcut"></property>

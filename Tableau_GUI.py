@@ -121,7 +121,8 @@ class MyFrame5 ( wx.Frame ):
 		self.Bind(wx.EVT_MENU, self.BaseCompleta,bc)
 		self.Bind(wx.EVT_MENU, self.TomaRazon,tr)
 
-	def CreacionDotacion(self,event):
+	def CreacionDotacion(self,event): #falta modificar el ingreso de datos del usuario,
+									# y probablemente la solicitud de archivo
 		import csv
 		import pandas as pd
 		import numpy as np
@@ -246,22 +247,22 @@ class MyFrame5 ( wx.Frame ):
 	def CargarSigfe(self,event):
 		print ("Cargar Sigfe")
 
-	def TablaCupos(self,event):
+	def TablaCupos(self,event):#OK
 		import os
 		os.chdir('C:/Program Files/PostgreSQL/10/bin') #ojo con las / en lugar de \
 		os.startfile("bat_respaldo_cupos.bat")
 
-	def TablaPresupuesto(self,event):
+	def TablaPresupuesto(self,event):#OK
 		import os
 		os.chdir('C:/Program Files/PostgreSQL/10/bin') #ojo con las / en lugar de \
 		os.startfile("bat_respaldo_presupuesto.bat")
 
-	def TablaSigfe(self,event):
+	def TablaSigfe(self,event):#OK
 		import os
 		os.chdir('C:/Program Files/PostgreSQL/10/bin') #ojo con las / en lugar de \
 		os.startfile("bat_respaldo_sigfe.bat")
 
-	def BaseCompleta(self,event):
+	def BaseCompleta(self,event):#OK
 		import os
 		os.chdir('C:/Program Files/PostgreSQL/10/bin') #ojo con las / en lugar de \
 		os.startfile("bat_respaldo_base.bat")
