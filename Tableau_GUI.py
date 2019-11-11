@@ -27,12 +27,14 @@ class MyFrame5 ( wx.Frame ):
 		self.m_panel5 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( 900,-1 ), wx.TAB_TRAVERSAL )
 		bSizer9 = wx.BoxSizer( wx.VERTICAL )
 
-		log=self.m_textCtrl4 = wx.TextCtrl( self.m_panel5, wx.ID_ANY, wx.EmptyString, wx.Point( -1,-1 ), wx.DefaultSize, 0|wx.HSCROLL|wx.VSCROLL )
+		style=wx.TE_MULTILINE|wx.HSCROLL|wx.VSCROLL
+		log=self.m_textCtrl4 = wx.TextCtrl( self.m_panel5, wx.ID_ANY, wx.EmptyString, wx.Point( -1,-1 ), wx.DefaultSize, style=style )
 		self.m_textCtrl4.SetMinSize( wx.Size( -1,220 ) )
 
 		bSizer9.Add( self.m_textCtrl4, 0, wx.ALL|wx.EXPAND, 5 )
 
 		sys.stdout=log
+
 
 		self.m_panel5.SetSizer( bSizer9 )
 		self.m_panel5.Layout()
@@ -121,6 +123,7 @@ class MyFrame5 ( wx.Frame ):
 		self.Bind(wx.EVT_MENU, self.BaseCompleta,bc)
 		self.Bind(wx.EVT_MENU, self.TomaRazon,tr)
 
+
 	def CreacionDotacion(self,event): #falta modificar el ingreso de datos del usuario,
 									# y probablemente la solicitud de archivo
 		import csv
@@ -134,16 +137,24 @@ class MyFrame5 ( wx.Frame ):
 
 		# para agrupar, se debe escribir agrupor y luego tab
 
+		#MUESTRA UN CUADRO DE DIALOGO PERO NO CREO QUE SEA LO QUE NECESITO
+		#x=wx.MessageDialog(self, message="Seleccione el archivo del exportador de datos", caption="Auditor E.U.S.", pos=wx.DefaultPosition, style = wx.OK )
+		#x.ShowModal()
+		#exit()
+		self.txt.GetValue()
+
+		import time
 		print("Ingrese el año en números")
-		anio = input()
+		#anio = input()
+
 		print("Ingrese el mes (use minúsculas)")
-		mes = input()
+		#mes = input()
 
 		#lectura y preparación (OK)
 		#<inicio #
-		root = tkinter.Tk()
-		root.withdraw()
-		file_path = tkinter.filedialog.askopenfilename()
+		#root = tkinter.Tk()
+		#root.withdraw()
+		#file_path = tkinter.filedialog.askopenfilename()
 
 		print("")
 		print("leyendo base\n")

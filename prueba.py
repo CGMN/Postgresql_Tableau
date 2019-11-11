@@ -1,47 +1,35 @@
 import wx
 
+########################################################################
 class MyFrame(wx.Frame):
+    """"""
+
+    #----------------------------------------------------------------------
     def __init__(self):
-        wx.Frame.__init__(self, None,-1, "Simple Menu Example")
+        """Constructor"""
+        wx.Frame.__init__(self, None, title="Chat")
+        panel = wx.Panel(self)
 
-        p = wx.Panel(self)
+        my_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        self.m_panel5 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.Size(380,380 ), wx.TAB_TRAVERSAL )
-        bSizer9 = wx.BoxSizer( wx.VERTICAL )
+        lbl = wx.StaticText(panel, label="Input:")
+        my_sizer.Add(lbl, 0, wx.ALL, 5)
 
-        self.m_textCtrl4 = wx.TextCtrl( self.m_panel5, wx.ID_ANY, wx.EmptyString, wx.Point( -1,-1 ), wx.DefaultSize, 0|wx.HSCROLL|wx.VSCROLL )
-        self.m_textCtrl4.SetMinSize( wx.Size( -1,220 ) )
+        self.txt = wx.TextCtrl(panel, style=wx.TE_PROCESS_ENTER)
+        self.txt.SetFocus()
+        self.txt.Bind(wx.EVT_TEXT_ENTER, self.OnEnter)
+        my_sizer.Add(self.txt, 0, wx.ALL, 5)
 
-        bSizer9.Add( self.m_textCtrl4, 0, wx.ALL|wx.EXPAND, 5 )
+        panel.SetSizer(my_sizer)
+        self.Show()
 
+    #----------------------------------------------------------------------
+    def OnEnter(self, event):
+        """"""
+        text = self.txt.GetValue()
+        self.Destroy()
 
-        self.m_panel5.SetSizer( bSizer9 )
-        self.m_panel5.Layout()
-
-        menu1 = wx.Menu()
-        simple = menu1.Append(-1, "Simple menu item")
-        menu1.AppendSeparator()
-        exit = menu1.Append(-1, "Exit")
-
-        menu2 = wx.Menu()
-        simple2 = menu2.Append(-1, "Simple menu item2")
-        menu2.AppendSeparator()
-        exit = menu2.Append(-1, "Exit2")
-
-
-        self.Bind(wx.EVT_MENU, self.OnSimple, simple)
-        self.Bind(wx.EVT_MENU, self.OnExit, exit)
-        menuBar = wx.MenuBar()
-        menuBar.Append(menu1, "Simple Menu")
-        self.SetMenuBar(menuBar)
-
-    def OnSimple(self, event):
-        wx.MessageBox("You selected the simple menu item")
-
-    def OnExit(self, event):
-        self.Close()
-
-app = wx.App()
-frame = MyFrame()
-frame.Show()
-app.MainLoop()
+if __name__ == "__main__":
+    app = wx.App(True)
+    frame = MyFrame()
+    app.MainLoop()
