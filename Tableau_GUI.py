@@ -124,118 +124,10 @@ class MyFrame5 ( wx.Frame ):
 		self.Bind(wx.EVT_MENU, self.TomaRazon,tr)
 
 
-	def CreacionDotacion(self,event): #falta modificar el ingreso de datos del usuario,
-									# y probablemente la solicitud de archivo
-		import csv
-		import pandas as pd
-		import numpy as np
-		import tkinter.filedialog
-		import re
-
-		#la entrada es archivo con cod ss, cod establ, glosa y valor
-		#convertirlo a formato de subida
-
-		# para agrupar, se debe escribir agrupor y luego tab
-
-		#MUESTRA UN CUADRO DE DIALOGO PERO NO CREO QUE SEA LO QUE NECESITO
-		#x=wx.MessageDialog(self, message="Seleccione el archivo del exportador de datos", caption="Auditor E.U.S.", pos=wx.DefaultPosition, style = wx.OK )
-		#x.ShowModal()
-		#exit()
-		self.txt.GetValue()
-
+	def CreacionDotacion(self, event):
 		import time
-		print("Ingrese el año en números")
-		#anio = input()
-
-		print("Ingrese el mes (use minúsculas)")
-		#mes = input()
-
-		#lectura y preparación (OK)
-		#<inicio #
-		#root = tkinter.Tk()
-		#root.withdraw()
-		#file_path = tkinter.filedialog.askopenfilename()
-
-		print("")
-		print("leyendo base\n")
-
-		# el archivo debería tener este formato: Cod SS, Cod Estab, Glosa,Valor,
-		#importa el orden, no el nombre
-		dfdot = pd.read_excel(str(file_path))
-
-		dfdot.loc[0, "SS"] = ""
-		dfdot.loc[0, "Establ"] = ""
-		dfdot.loc[0, "Cod Dipres"] = ""
-
-		#</fin #
-
-
-		#uso de diccionarios (OK)
-		#<inicio #
-
-		# diccionarios
-		df1 = pd.read_excel("Estandarización.xlsx",
-		                    sheet_name="SS y Establ QV a Tableau")
-		df2 = pd.read_excel("Estandarización.xlsx", sheet_name="Glosas QV a Tableau")
-		cabeceras1 = (list(df1))  # lista con las cabeceras
-		cabeceras2 = (list(df2))  # lista con las cabeceras
-
-		diccio_SS = {}  # crea el diccionario de cod servicio:servicio de salud
-		for i in range(0, len(df1)):
-		    diccio_SS[df1.loc[i, str(cabeceras1[0])]
-		                 ] = df1.loc[i, str(cabeceras1[2])]
-
-		diccio_codDipres = {} #diccionario cod ss: cod dipres
-		for i in range(0, len(df1)):
-		    diccio_codDipres[df1.loc[i, str(cabeceras1[0])]
-		                     ] = df1.loc[i, str(cabeceras1[1])]
-
-		diccio_establ = {}  # diccionario cod establ:nombre establ logra
-		for i in range(0, len(df1)):
-		    diccio_establ[df1.loc[i, str(cabeceras1[8])]
-		                  ] = df1.loc[i, str(cabeceras1[9])]
-
-		#uso de los diccionarios
-		dfdot[dfdot.columns[4]].update(dfdot[dfdot.columns[0]].map(
-		    diccio_SS))  # cod ss - servicio de salud
-
-		dfdot[dfdot.columns[5]].update(dfdot[dfdot.columns[1]].map(
-		    diccio_establ))  # cod establ - establ
-
-		dfdot[dfdot.columns[6]].update(dfdot[dfdot.columns[0]].map(
-		    diccio_codDipres))  # cod ss - cod dipres
-
-		#</fin #
-
-
-		#llevar los datos de dotacion al formato (OK)
-		#<inicio #
-
-		df_formato = pd.read_excel("FORMATO DOTACION.xlsx")
-
-		df_formato[['CÓDIGO SIRH DEL SERVICIO DE SALUD', 'CÓDIGO SIRH DEL ESTABLECIMIENTO',
-		            'Glosa', 'Devengado Moneda Año Estudio (2019)', ' Institucion Logra', 'Establecimiento Logra',
-		            'CÓDIGO DIPRES DEL SERVICIO DE SALUD']] = dfdot[[dfdot.columns[0], dfdot.columns[1], dfdot.columns[2], dfdot.columns[3],
-		                                                            'SS', 'Establ', 'Cod Dipres']]
-
-		df_formato['año '] = anio
-		df_formato['mes'] = mes
-		df_formato.fillna(0, inplace=True)
-
-		#</fin #
-
-
-		#grabar archivo (OK)
-		#<inicio #
-
-		#dfdot.to_csv('dotacion.csv', encoding='latin1', index=False)
-
-		df_formato.to_csv('dotacion_para_subir.csv', encoding='latin1',
-		                  index=False, header=False)
-
-		print ('Archivo grabado')
-
-		#</fin #
+		self.new = NewWindow()
+		self.new.Show()
 
 	def SubidaDotacion(self,event):
 		print ("Subida dotacion")
@@ -283,6 +175,46 @@ class MyFrame5 ( wx.Frame ):
 
 	def __del__( self ):
 		pass
+
+class NewWindow(wx.Frame):
+	""""""
+
+	#----------------------------------------------------------------------
+	def __init__(self):
+		"""Constructor"""
+		wx.Frame.__init__(self, None, title="Ingrese datos",pos=(600,300),size=(300,200))
+		panel = wx.Panel(self)
+
+		my_sizer = wx.BoxSizer(wx.VERTICAL)
+
+		lbl = wx.StaticText(panel, label="Año en números:")
+		my_sizer.Add(lbl, 0, wx.ALL, 5)
+
+		self.txt = wx.TextCtrl(panel, style=wx.TE_PROCESS_ENTER)
+		self.txt.SetFocus()
+		self.txt.Bind(wx.EVT_TEXT_ENTER, self.OnEnter)
+		my_sizer.Add(self.txt, 0, wx.ALL, 5)
+
+		lbl2 = wx.StaticText(panel, label="Mes (use minusculas):")
+		my_sizer.Add(lbl2, 0, wx.ALL, 5)
+
+		self.txt2 = wx.TextCtrl(panel, style=wx.TE_PROCESS_ENTER)
+		self.txt2.SetFocus()
+		self.txt2.Bind(wx.EVT_TEXT_ENTER, self.OnEnter)
+		my_sizer.Add(self.txt2, 0, wx.ALL, 5)
+
+
+		panel.SetSizer(my_sizer)
+		self.Show()
+
+	#----------------------------------------------------------------------
+	def OnEnter(self, event):
+		anio = self.txt.GetValue()
+		mes = self.txt2.GetValue()
+		print (anio)
+		print (mes)
+		self.Destroy()
+
 
 if __name__ == "__main__":
 	app = wx.App(False)
