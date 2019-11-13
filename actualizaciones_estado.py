@@ -15,9 +15,8 @@ try:
 
     if mes_inicio in meses_anio:
         print ("\nEscriba el documento que cambiará a toma de razon, en números")
-        documento=int(input())
-
-        if isinstance(documento, int):
+        try:
+            documento=int(float(documento))
             meses_considerados=[]
 
             ind_inicio=meses_anio.index(mes_inicio) #para obtener la posición del mes en la lista de meses
@@ -39,7 +38,7 @@ try:
                 print ("\nNo se han realizado modificaciones, asegurese de haber ingresado los datos correctamente")
             else:
                 print ("\nSe han modificado:",conteo,"filas")
-        else:
+        except:
             print ("Debe escribir un número entero")
     else:
         print ("\nMes no corresponde")
