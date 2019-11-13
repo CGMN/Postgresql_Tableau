@@ -15,7 +15,7 @@ try:
 
     if mes_inicio in meses_anio:
         print ("\nEscriba el documento que cambiará a toma de razon, en números")
-        documento=input()
+        documento=int(input())
 
         if isinstance(documento, int):
             meses_considerados=[]

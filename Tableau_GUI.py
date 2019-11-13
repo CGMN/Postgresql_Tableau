@@ -181,11 +181,19 @@ class NewWindow(wx.Frame):
 
 	#----------------------------------------------------------------------
 	def __init__(self):
+
+		import os
 		"""Constructor"""
 		wx.Frame.__init__(self, None, title="Ingrese datos",pos=(600,300),size=(300,200))
 		panel = wx.Panel(self)
 
+		self.currentDirectory = os.getcwd()
+
 		my_sizer = wx.BoxSizer(wx.VERTICAL)
+
+		openFileDlgBtn = wx.Button(panel, label="Show OPEN FileDialog", pos=(30,120))
+		openFileDlgBtn.Bind(wx.EVT_BUTTON, self.onOpenFile)
+		my_sizer.Add(openFileDlgBtn, 0, wx.ALL|wx.CENTER, 5)
 
 		lbl = wx.StaticText(panel, label="Año en números:")
 		my_sizer.Add(lbl, 0, wx.ALL, 5)
@@ -198,10 +206,13 @@ class NewWindow(wx.Frame):
 		lbl2 = wx.StaticText(panel, label="Mes (use minusculas):")
 		my_sizer.Add(lbl2, 0, wx.ALL, 5)
 
+
 		self.txt2 = wx.TextCtrl(panel, style=wx.TE_PROCESS_ENTER)
 		self.txt2.SetFocus()
 		self.txt2.Bind(wx.EVT_TEXT_ENTER, self.OnEnter)
 		my_sizer.Add(self.txt2, 0, wx.ALL, 5)
+
+
 
 
 		panel.SetSizer(my_sizer)
@@ -209,11 +220,127 @@ class NewWindow(wx.Frame):
 
 	#----------------------------------------------------------------------
 	def OnEnter(self, event):
+		import os
 		anio = self.txt.GetValue()
 		mes = self.txt2.GetValue()
+		self.Destroy()
 		print (anio)
 		print (mes)
-		self.Destroy()
+		print (path[0])
+
+		import csv
+		import pandas as pd
+		import numpy as np
+		import re
+
+		#la entrada es archivo con cod ss, cod establ, glosa y valor
+		#convertirlo a formato de subida
+
+		# para agrupar, se debe escribir agrupor y luego tab
+
+		#lectura y preparación (OK)
+		#<inicio #
+
+		print("")
+		print("leyendo base\n")
+
+		# el archivo debería tener este formato: Cod SS, Cod Estab, Glosa,Valor,
+		#importa el orden, no el nombre
+		dfdot = pd.read_excel(str(path[0]))
+
+		dfdot.loc[0, "SS"] = ""
+		dfdot.loc[0, "Establ"] = ""
+		dfdot.loc[0, "Cod Dipres"] = ""
+
+		#</fin #
+
+
+		#uso de diccionarios (OK)
+		#<inicio #
+
+		# diccionarios
+		df1 = pd.read_excel("C:/Users/cmarinn/Google Drive/Python/Programa Revision/Tableau/Postgresql_Tableau/Estandarización.xlsx",
+		                    sheet_name="SS y Establ QV a Tableau")
+		df2 = pd.read_excel("C:/Users/cmarinn/Google Drive/Python/Programa Revision/Tableau/Postgresql_Tableau/Estandarización.xlsx",
+		 					sheet_name="Glosas QV a Tableau")
+		cabeceras1 = (list(df1))  # lista con las cabeceras
+		cabeceras2 = (list(df2))  # lista con las cabeceras
+
+		diccio_SS = {}  # crea el diccionario de cod servicio:servicio de salud
+		for i in range(0, len(df1)):
+		    diccio_SS[df1.loc[i, str(cabeceras1[0])]
+		                 ] = df1.loc[i, str(cabeceras1[2])]
+
+		diccio_codDipres = {} #diccionario cod ss: cod dipres
+		for i in range(0, len(df1)):
+		    diccio_codDipres[df1.loc[i, str(cabeceras1[0])]
+		                     ] = df1.loc[i, str(cabeceras1[1])]
+
+		diccio_establ = {}  # diccionario cod establ:nombre establ logra
+		for i in range(0, len(df1)):
+		    diccio_establ[df1.loc[i, str(cabeceras1[8])]
+		                  ] = df1.loc[i, str(cabeceras1[9])]
+
+		#uso de los diccionarios
+		dfdot[dfdot.columns[4]].update(dfdot[dfdot.columns[0]].map(
+		    diccio_SS))  # cod ss - servicio de salud
+
+		dfdot[dfdot.columns[5]].update(dfdot[dfdot.columns[1]].map(
+		    diccio_establ))  # cod establ - establ
+
+		dfdot[dfdot.columns[6]].update(dfdot[dfdot.columns[0]].map(
+		    diccio_codDipres))  # cod ss - cod dipres
+
+		#</fin #
+
+
+		#llevar los datos de dotacion al formato (OK)
+		#<inicio #
+
+		df_formato = pd.read_excel("C:/Users/cmarinn/Google Drive/Python/Programa Revision/Tableau/Postgresql_Tableau/FORMATO DOTACION.xlsx")
+
+		df_formato[['CÓDIGO SIRH DEL SERVICIO DE SALUD', 'CÓDIGO SIRH DEL ESTABLECIMIENTO',
+		            'Glosa', 'Devengado Moneda Año Estudio (2019)', ' Institucion Logra', 'Establecimiento Logra',
+		            'CÓDIGO DIPRES DEL SERVICIO DE SALUD']] = dfdot[[dfdot.columns[0], dfdot.columns[1], dfdot.columns[2], dfdot.columns[3],
+		                                                            'SS', 'Establ', 'Cod Dipres']]
+
+		df_formato['año '] = anio
+		df_formato['mes'] = mes
+		df_formato.fillna(0, inplace=True)
+
+		#</fin #
+
+
+		#grabar archivo (OK)
+		#<inicio #
+
+		#dfdot.to_csv('dotacion.csv', encoding='latin1', index=False)
+
+		df_formato.to_csv('dotacion_para_subir.csv', encoding='latin1',
+		                  index=False, header=False)
+
+		print ('Archivo grabado')
+
+		#</fin #
+
+
+
+	def onOpenFile(self, event):
+
+	#Create and show the Open FileDialog
+		wildcard = "Python source (*.py)|*.py|" \
+			"All files (*.*)|*.*"
+		dlg = wx.FileDialog(self, message="Choose a file",
+		defaultDir=self.currentDirectory,
+		defaultFile="",
+		wildcard=wildcard,
+		style=wx.FD_OPEN | wx.FD_MULTIPLE | wx.FD_CHANGE_DIR
+		)
+		if dlg.ShowModal() == wx.ID_OK:
+			global path
+			path = dlg.GetPaths()
+
+		dlg.Destroy()
 
 
 if __name__ == "__main__":
