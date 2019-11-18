@@ -112,11 +112,13 @@ class MyFrame5 ( wx.Frame ):
 
 	def CreacionDotacion(self, event):#OK
 		import time
-		self.new = NewWindow()
+		self.new = Creacion_Dotacion()
 		self.new.Show()
 
 	def SubidaDotacion(self,event):
-		print ("Subida dotacion")
+		import time
+		self.new = Subida_Dotacion()
+		self.new.Show()
 
 	def CreacionModificacion(self,event):
 		print ("Creacion modificacion")
@@ -162,7 +164,7 @@ class MyFrame5 ( wx.Frame ):
 	def __del__( self ):
 		pass
 
-class NewWindow(wx.Frame): #Pantalla para pedir datos de creacio dotacion y seleccionar archivo
+class Creacion_Dotacion(wx.Frame): #Pantalla para pedir datos de creacio dotacion y seleccionar archivo
 
 	def __init__(self):
 
@@ -314,6 +316,64 @@ class NewWindow(wx.Frame): #Pantalla para pedir datos de creacio dotacion y sele
 			global path
 			path = dlg.GetPaths()
 		dlg.Destroy()
+
+class Subida_Dotacion(wx.Frame): #Pantalla para pedir datos de subida dotacion
+
+	def __init__(self):
+
+		import os
+		"""Constructor"""
+		wx.Frame.__init__(self, None, title="Confirme",pos=(600,300),size=(550,200))
+		panel = wx.Panel(self)
+
+		self.currentDirectory = os.getcwd()
+
+		my_sizer = wx.BoxSizer(wx.VERTICAL)
+
+
+		lbl = wx.StaticText(panel, label="¿Está seguro que desea subir el archivo 'dotacion_para_subir.csv' a la tabla new_cupos_est?:")
+		my_sizer.Add(lbl, 0, wx.ALL, 5)
+
+		self.txt = wx.TextCtrl(panel, style=wx.TE_PROCESS_ENTER)
+		self.txt.SetFocus()
+		self.txt.Bind(wx.EVT_TEXT_ENTER, self.OnEnter1)
+		my_sizer.Add(self.txt, 0, wx.ALL, 5)
+
+
+		panel.SetSizer(my_sizer)
+		self.Show()
+
+	#----------------------------------------------------------------------
+	def OnEnter1(self, event): #Aqui va el programa de creacion dotacion
+		import os
+		anio = self.txt.GetValue()
+		mes = self.txt2.GetValue()
+		self.Destroy()
+
+		try:
+			anio=int(float(anio))
+			import csv
+			import pandas as pd
+			import numpy as np
+			import re
+
+			#la entrada es archivo con cod ss, cod establ, glosa y valor
+			#convertirlo a formato de subida
+
+			# para agrupar, se debe escribir agrupor y luego tab
+
+			#lectura y preparación (OK)
+
+
+			print("aqui va lo de subida de dotacion\n")
+
+
+		except:
+		 	print ("Debe ingresar un número entero")
+
+
+
+
 
 if __name__ == "__main__":
 	app = wx.App(False)
