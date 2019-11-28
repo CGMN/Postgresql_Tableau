@@ -295,7 +295,7 @@ class Creacion_Dotacion(wx.Frame): #Pantalla para pedir datos de creacio dotacio
 
 			#dfdot.to_csv('dotacion.csv', encoding='latin1', index=False)
 
-			df_formato.to_csv('dotacion_para_subir.csv', encoding='latin1',
+			df_formato.to_csv('C:/Users/cmarinn/Google Drive/Python/Programa Revision/Tableau/Postgresql_Tableau/dotacion_para_subir.csv', encoding='latin1',
 			                  index=False, header=False)
 
 			print ('Archivo grabado')
@@ -331,7 +331,7 @@ class Subida_Dotacion(wx.Frame): #Pantalla para pedir datos de subida dotacion
 		my_sizer = wx.BoxSizer(wx.VERTICAL)
 
 
-		lbl = wx.StaticText(panel, label="¿Está seguro que desea subir el archivo 'dotacion_para_subir.csv' a la tabla new_cupos_est?:")
+		lbl = wx.StaticText(panel, label='''¿Está seguro que desea subir el archivo 'dotacion_para_subir.csv' a la tabla new_cupos_est?,\n Responda SI o NO:''')
 		my_sizer.Add(lbl, 0, wx.ALL, 5)
 
 		self.txt = wx.TextCtrl(panel, style=wx.TE_PROCESS_ENTER)
@@ -344,34 +344,39 @@ class Subida_Dotacion(wx.Frame): #Pantalla para pedir datos de subida dotacion
 		self.Show()
 
 	#----------------------------------------------------------------------
-	def OnEnter1(self, event): #Aqui va el programa de creacion dotacion
+	def OnEnter1(self, event): #Aqui va el programa de subida dotacion
 		import os
-		anio = self.txt.GetValue()
-		mes = self.txt2.GetValue()
+		import psycopg2
+		respuesta = self.txt.GetValue()
 		self.Destroy()
-
 		try:
-			anio=int(float(anio))
-			import csv
-			import pandas as pd
-			import numpy as np
-			import re
+			connection = psycopg2.connect(user="admin", password="admin",
+			                          host="localhost", port="5432", database="Gestion_RRHH")
+			cursor = connection.cursor()
+			# Print PostgreSQL Connection properties
+			#print (connection.get_dsn_parameters(),"\n")
+			print ("\nSe ha conectado satisfactoriamente a la base de datos","\n")
+			# subir csv
+			#print ("¿Está seguro que desea subir el archivo dotacion_para_subir.csv a la tabla new_cupos_est?")
+			#print ("Responda: SI o NO","\n")
+			if respuesta=='SI':
+				with open('dotacion_para_subir.csv', 'r') as f:
+					cursor.copy_from(f, 'new_cupos_est', sep=',')
+					connection.commit()
+					conteo=cursor.rowcount
+					print ("Se han agregado",conteo,"filas a la tabla","\n")
 
-			#la entrada es archivo con cod ss, cod establ, glosa y valor
-			#convertirlo a formato de subida
+			else:
+				print ("No se ha realizado la acción")
 
-			# para agrupar, se debe escribir agrupor y luego tab
-
-			#lectura y preparación (OK)
-
-
-			print("aqui va lo de subida de dotacion\n")
-
-
-		except:
-		 	print ("Debe ingresar un número entero")
-
-
+		except (Exception, psycopg2.Error) as error:
+		    print ("Error while connecting to PostgreSQL", error)
+		finally:
+		    #closing database connection.
+		        if(connection):
+		            cursor.close()
+		            connection.close()
+		            print("Conexión finalizada con PostgreSQL")
 
 
 

@@ -20,7 +20,7 @@ file_path = tkinter.filedialog.askopenfilename()
 print("")
 print("leyendo base\n")
 
-# el archivo debería tener este formato: Servicio de Salud, Establecimiento, Haber, Valor,
+# el archivo debería tener este formato: Servicio de Salud, Establecimiento, Haber (hay dicionario), Valor,
 #importa el orden, no el nombre
 dfqv = pd.read_excel(str(file_path))
 
