@@ -111,17 +111,17 @@ class MyFrame5 ( wx.Frame ):
 		self.Bind(wx.EVT_MENU, self.TomaRazon,tr)
 
 	def CreacionDotacion(self, event):#OK
-		import time
 		self.new = Creacion_Dotacion()
 		self.new.Show()
 
-	def SubidaDotacion(self,event):
+	def SubidaDotacion(self,event):#OK
 		import time
 		self.new = Subida_Dotacion()
 		self.new.Show()
 
 	def CreacionModificacion(self,event):
-		print ("Creacion modificacion")
+		self.new = Creacion_Modificacion()
+		self.new.Show()
 
 	def SubidaModificacion(self,event):
 		print ("Subida modificacion")
@@ -293,12 +293,13 @@ class Creacion_Dotacion(wx.Frame): #Pantalla para pedir datos de creacio dotacio
 			#grabar archivo (OK)
 			#<inicio #
 
-			#dfdot.to_csv('dotacion.csv', encoding='latin1', index=False)
-
+			#lo grabo en la carpeta del programa y en la carpeta desde donde se buscó el archivo de origen
+			df_formato.to_csv('dotacion_para_subir.csv', encoding='latin1',
+			                  index=False, header=False)
 			df_formato.to_csv('C:/Users/cmarinn/Google Drive/Python/Programa Revision/Tableau/Postgresql_Tableau/dotacion_para_subir.csv', encoding='latin1',
 			                  index=False, header=False)
 
-			print ('Archivo grabado')
+			print ('Archivo grabado con',len(df_formato),"filas")
 
 			#</fin #
 
@@ -378,7 +379,100 @@ class Subida_Dotacion(wx.Frame): #Pantalla para pedir datos de subida dotacion
 		            connection.close()
 		            print("Conexión finalizada con PostgreSQL")
 
+class Creacion_Modificacion(wx.Frame): #Pantalla para pedir archivo para modif presup
+	def __init__(self):
 
+		import os
+		"""Constructor"""
+		wx.Frame.__init__(self, None, title="Ingrese datos",pos=(600,300),size=(300,200))
+		panel = wx.Panel(self)
+
+		self.currentDirectory = os.getcwd()
+
+		my_sizer = wx.BoxSizer(wx.VERTICAL)
+
+		openFileDlgBtn = wx.Button(panel, label="Seleccionar Archivo", pos=(30,120))
+		openFileDlgBtn.Bind(wx.EVT_BUTTON, self.onOpenFile)
+		my_sizer.Add(openFileDlgBtn, 0, wx.ALL|wx.CENTER, 5)
+
+		panel.SetSizer(my_sizer)
+		self.Show()
+
+#----------------------------------------------------------------------
+	def OnEnter2(self, event): #Aqui va el programa de creacion modificacion
+		import os
+		self.Destroy()
+
+		try:
+			import csv
+			import pandas as pd
+			import numpy as np
+
+			print("")
+			print ("leyendo base\n")
+
+
+			#crear tantas copias como meses queden para llegar a diciembre (OK)
+			#<inicio #
+
+			meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
+
+			dfmodpresup = pd.read_excel(str(path[0]))
+
+			mes_in=list(set(dfmodpresup['mes'].tolist()))
+			print (mes_in)
+
+			ind_inicio=meses.index(mes_in[0])
+			print(ind_inicio)
+
+			dfmeses=[]
+			for i in range(ind_inicio,len(meses)):
+			    dfmeses.append(dfmodpresup.copy())
+			print ("cantidad de df por meses",len(dfmeses))
+
+			#</fin #
+
+
+			#cambiar en las copias de acuerdo a los meses que faltan (OK)
+			#<inicio #
+
+			for i in range (1, len(dfmeses)):
+			    dfmeses[i].replace(mes_in,meses[ind_inicio+i], inplace=True)
+
+			#</fin #
+
+
+			#concatenar (OK)
+			#<inicio #
+
+			df_consolidado=pd.concat(dfmeses)
+
+			#</fin #
+
+
+			#grabar (OK)
+			#<inicio #
+
+			df_consolidado.to_csv('modif_presup_para_subir_consolidada.csv', encoding='latin1',
+			                  index=False, header=False)
+
+			print ("Archivo grabado con el nombre: modif_presup_para_subir.csv")
+
+			#</fin #
+		except:
+			print("u")
+
+	def onOpenFile(self, event):#Aqui se selecciona el archivo
+		#Create and show the Open FileDialog
+		wildcard = "All files (*.*)|*.*"
+		dlg = wx.FileDialog(self, message="Elegir el archivo",
+		defaultDir=self.currentDirectory, defaultFile="",
+		wildcard=wildcard, style=wx.FD_OPEN | wx.FD_MULTIPLE | wx.FD_CHANGE_DIR
+		)
+		if dlg.ShowModal() == wx.ID_OK:
+			global path
+			path = dlg.GetPaths()
+		dlg.Destroy()
 
 if __name__ == "__main__":
 	app = wx.App(False)
