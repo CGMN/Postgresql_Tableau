@@ -97,6 +97,10 @@ df_formato.fillna(0, inplace=True)
 df_formato.to_csv('dotacion_para_subir.csv', encoding='latin1',
                   index=False, header=False)
 
+print ("")
 print ('Archivo grabado')
+qfinal=pd.read_csv('dotacion_para_subir.csv', encoding='latin1')
+print (len(qfinal), "registros en el archivo.")
+print ()
 
 #</fin #

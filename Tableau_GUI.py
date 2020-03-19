@@ -398,6 +398,7 @@ class Creacion_Modificacion(wx.Frame): #Pantalla para pedir archivo para modif p
 		panel.SetSizer(my_sizer)
 		self.Show()
 
+
 #----------------------------------------------------------------------
 	def OnEnter2(self, event): #Aqui va el programa de creacion modificacion
 		import os

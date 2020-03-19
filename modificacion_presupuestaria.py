@@ -19,14 +19,14 @@ meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septie
 dfmodpresup = pd.read_excel(str(file_path))
 
 mes_in=list(set(dfmodpresup['mes'].tolist()))
-print (mes_in)
+print ("mes de inicio",str(mes_in))
 
 ind_inicio=meses.index(mes_in[0])
-print(ind_inicio)
 
 dfmeses=[]
 for i in range(ind_inicio,len(meses)):
     dfmeses.append(dfmodpresup.copy())
+print ("")
 print ("cantidad de df por meses",len(dfmeses))
 
 #</fin #
@@ -55,6 +55,10 @@ df_consolidado=pd.concat(dfmeses)
 df_consolidado.to_csv('modif_presup_para_subir_consolidada.csv', encoding='latin1',
                   index=False, header=False)
 
-print ("Archivo grabado con el nombre: modif_presup_para_subir.csv")
+print ("")
+print ("Archivo grabado con el nombre: modif_presup_para_subir_consolidada.csv")
+qfinal=pd.read_csv('modif_presup_para_subir_consolidada.csv', encoding='latin1')
+print ("")
+print (len(qfinal),"filas en el archivo.")
 
 #</fin #

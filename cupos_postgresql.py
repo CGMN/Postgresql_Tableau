@@ -15,7 +15,8 @@ try:
         with open('cupos_para_subir.csv', 'r') as f:
             cursor.copy_from(f, 'new_cupos_est', sep=',')
             connection.commit()
-            print ("Se ha agregado la información a la tabla","\n")
+            conteo=cursor.rowcount
+            print ("Se han agregado",conteo, "filas a la tabla","\n")
     else:
         print("No se ha realizado la acción")
 

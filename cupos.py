@@ -20,7 +20,7 @@ file_path = tkinter.filedialog.askopenfilename()
 print("")
 print("leyendo base\n")
 
-# el archivo debería tener este formato: Servicio de Salud, Establecimiento, Haber (hay dicionario), Valor,
+# el archivo debería tener este formato: Servicio de Salud (nombre Qv), Establecimiento (Nombre Qv), Haber (hay dicionario), Valor,
 #importa el orden, no el nombre
 dfqv = pd.read_excel(str(file_path))
 
@@ -109,10 +109,15 @@ df_formato.fillna(0, inplace=True)
 
 #dfqv.to_csv('cupos.csv', encoding='latin1', index=False)
 
-df_formato.to_csv('cupos_para_subir.csv', encoding='latin1',
+df_formato.to_csv("cupos_para_subir.csv", encoding='latin1',
                   index=False, header=False)
+#df_formato.to_csv("C:\Users\cmarinn\Google Drive\Python\Programa Revision\Tableau\Postgresql_Tableau\cupos_para_subir.csv", encoding='latin1',
+#                  index=False, header=False)
 
 print("")
 print("Archivo grabado con nombre cupos_para_subir.csv'")
+qfinal=pd.read_csv("cupos_para_subir.csv", encoding='latin1')
+print("")
+print (len(qfinal), "filas en el archivo")
 
 #</fin #
